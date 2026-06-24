@@ -931,6 +931,65 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
 };
 
 /**
+ * Patch for calculating position of the reporter notch in to blocks.
+ */
+Blockly.BlockSvg.prototype.ReporterPositionCalculation = function() {
+  // TODO: Fix this properly later.
+  // When calculating XY coordinates, the Blockly library accumulates floating-point precision errors. 
+  // As a result, xy.x and xy.y can store infinitesimally small values approaching zero (e.g., -1.13e-13). 
+  // This breaks the condition for capturing the reporter block's slot position. 
+  // Due to this bug, a temporary workaround has been implemented below.
+  if (this.outputConnection && this.outputConnection.targetConnection) {
+    const blockSvg = this.getSvgRoot();
+    const shape = blockSvg.parentElement.getAttribute("data-shapes")
+   
+    var parent = this.getParent();
+    
+    if (shape === "c-block") {
+        const transformAttr = this.getSvgRoot().getAttribute("transform");
+        console.log("c-block!")
+        
+
+        const xy = Blockly.utils.getRelativeXY(this.getSvgRoot());
+        if (xy.x === 0 && xy.y === 0 ) {
+          const parentSvg = this.getSvgRoot().parentElement;
+          const iconG = parentSvg.querySelector('g[transform^="translate"]');
+          const iconXY = Blockly.utils.getRelativeXY(iconG);
+          const bbox = parentSvg.getBBox();
+          // console.log(iconXY.x)
+          // console.log(iconXY.y)
+          // console.log(iconXY)
+          this.getSvgRoot().setAttribute('transform', `translate(${iconXY.x-2},${65})`);
+          // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
+        }
+
+
+        if (xy.x < 0.1 && xy.y < 0.1) {
+          const parentSvg = this.getSvgRoot().parentElement;
+          const iconG = parentSvg.querySelector('g[transform^="translate"]');
+          const iconXY = Blockly.utils.getRelativeXY(iconG);
+          const bbox = parentSvg.getBBox();
+          // console.log(iconXY.x)
+          // console.log(iconXY.y)
+          // console.log(iconXY)
+          this.getSvgRoot().setAttribute('transform', `translate(${iconXY.x-2},${65})`);
+          // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
+        }
+    }
+    if (shape === "stack") {
+        console.log("stack!")
+        const xy = Blockly.utils.getRelativeXY(this.getSvgRoot());
+        if (xy.x === 0 && xy.y === 0 ) {
+            this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+        }
+        if (xy.x < 0.1 && xy.y < 0.1) {
+            this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+        }
+    }
+  }
+}
+
+/**
  * Move the connections for this block and all blocks attached under it.
  * Also update any attached bubbles.
  * @param {number} dx Horizontal offset from current location, in workspace
@@ -945,6 +1004,20 @@ Blockly.BlockSvg.prototype.moveConnections_ = function(dx, dy) {
     // This is probably an invisible block attached to a collapsed block.
     return;
   }
+
+  this.ReporterPositionCalculation()
+
+  // console.log('move_connections__')
+
+  var parent = this.getParent();
+  if (parent != null) {
+    // const svgParent = parent?.getSvgRoot()
+    // console.log(svgParent);
+  }
+
+  this.render(false)
+  // this.renderDraw_(this.metrics)
+
   var myConnections = this.getConnections_(false);
   for (var i = 0; i < myConnections.length; i++) {
     myConnections[i].moveBy(dx, dy);

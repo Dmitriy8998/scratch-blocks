@@ -232,12 +232,31 @@ Blockly.ConnectionDB.prototype.isInYRange_ = function(index, baseY, maxRadius) {
  *     properties:' connection' which is either another connection or null,
  *     and 'radius' which is the distance.
  */
+
+//BUG! The developers changed X and Y at a lower level! The library was originally designed for vertical blocks!
 Blockly.ConnectionDB.prototype.searchForClosest = function(conn, maxRadius,
     dxy) {
   // Don't bother.
   if (!this.connections_.length) {
     return {connection: null, radius: maxRadius};
   }
+
+  // if (conn.type === Blockly.OUTPUT_VALUE) {
+  //   const svg = conn.sourceBlock_.getSvgRoot()
+  //   const shape = svg.childNodes[0].parentElement.dataset.shapes
+  //   console.log(conn.x_)
+  //   dxy.y -= 20;
+  //   dxy.x -= 20;
+  //   maxRadius = 5;
+  // }
+  // if (conn.type === Blockly.INPUT_VALUE) {
+  //   const svg = conn.sourceBlock_.getSvgRoot()
+  //   const shape = svg.childNodes[0].parentElement.dataset.shapes
+  //   console.log(conn.x_)
+  //   dxy.y -= 20;
+  //   dxy.x -= 20;
+  //   maxRadius = 5;
+  // }
 
   // Stash the values of x and y from before the drag.
   var baseY = conn.y_;
@@ -275,6 +294,16 @@ Blockly.ConnectionDB.prototype.searchForClosest = function(conn, maxRadius,
       bestRadius = temp.distanceFrom(conn);
     }
     pointerMax++;
+  }
+
+  let pointerXMin = closestIndex - 1;
+  while (pointerXMin >= 0 && Math.abs(this.connections_[pointerXMin].x_ - conn.x_) <= maxRadius) {
+      temp = this.connections_[pointerXMin];
+      if (conn.isConnectionAllowed(temp, bestRadius)) {
+          bestConnection = temp;
+          bestRadius = temp.distanceFrom(conn);
+      }
+      pointerXMin--;
   }
 
   // Reset the values of x and y.

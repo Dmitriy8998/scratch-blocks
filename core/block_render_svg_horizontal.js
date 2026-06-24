@@ -388,17 +388,16 @@ Blockly.BlockSvg.prototype.render = function(opt_bubble) {
   var metrics = this.renderCompute_();
 
   // Don't redraw if we don't need to.
-  if (oldMetrics &&
-      Blockly.BlockSvg.metricsAreEquivalent_(oldMetrics, metrics)) {
+  if (oldMetrics && Blockly.BlockSvg.metricsAreEquivalent_(oldMetrics, metrics)) {
     // Skipping the redraw is fine, but we may still have to tighten up our
     // connections with child blocks.
-    if (metrics.statement && metrics.statement.connection &&
-        metrics.statement.targetConnection) {
+    if (metrics.statement && metrics.statement.connection && metrics.statement.targetConnection) {
       metrics.statement.connection.tighten_();
     }
     if (this.nextConnection && this.nextConnection.targetConnection) {
       this.nextConnection.tighten_();
     }
+    // this.renderDraw_(metrics);
   } else {
     this.height = metrics.height;
     this.width = metrics.width;
@@ -590,13 +589,11 @@ Blockly.BlockSvg.prototype.renderDraw_ = function(metrics) {
           imageFieldScale);
     }
   }
-
   // Position value input
   if (this.getFieldShadowBlock_()) {
+    // console.log("SHADOW_")
     var input = this.getFieldShadowBlock_().getSvgRoot();
-    var valueX = (Blockly.BlockSvg.NOTCH_WIDTH +
-      (metrics.bayWidth ? 2 * Blockly.BlockSvg.GRID_UNIT +
-        Blockly.BlockSvg.NOTCH_WIDTH * 2 : 0) + metrics.bayWidth);
+    var valueX = (Blockly.BlockSvg.NOTCH_WIDTH +(metrics.bayWidth ? 2 * Blockly.BlockSvg.GRID_UNIT + Blockly.BlockSvg.NOTCH_WIDTH * 2 : 0) + metrics.bayWidth);
     if (metrics.startHat) {
       // Start hats add some left margin to field for visual balance
       valueX += Blockly.BlockSvg.GRID_UNIT * 2;
@@ -605,6 +602,26 @@ Blockly.BlockSvg.prototype.renderDraw_ = function(metrics) {
       valueX = -valueX;
     }
     var valueY = (metrics.height + Blockly.BlockSvg.FIELD_Y_OFFSET);
+    // console.log('shadow_y_', valueY)
+    // console.log('shadow_x_', valueX)
+    var transformation = 'translate(' + valueX + ',' + valueY + ')';
+    input.setAttribute('transform', transformation);
+  }
+  
+  if (this.getFieldReporterBlock_()){
+    // console.log("REPORTER_")
+    var input = this.getFieldReporterBlock_().getSvgRoot();
+    var valueX = (Blockly.BlockSvg.NOTCH_WIDTH +(metrics.bayWidth ? 2 * Blockly.BlockSvg.GRID_UNIT + Blockly.BlockSvg.NOTCH_WIDTH * 2 : 0) + metrics.bayWidth);
+    if (metrics.startHat) {
+      // Start hats add some left margin to field for visual balance
+      valueX += Blockly.BlockSvg.GRID_UNIT * 2;
+    }
+    if (this.RTL) {
+      valueX = -valueX;
+    }
+    var valueY = (metrics.height + Blockly.BlockSvg.FIELD_Y_OFFSET);
+    // console.log('reporter_y_', valueY)
+    // console.log('reporter_x_', valueX)
     var transformation = 'translate(' + valueX + ',' + valueY + ')';
     input.setAttribute('transform', transformation);
   }
@@ -851,12 +868,30 @@ Blockly.BlockSvg.prototype.renderDrawTop_ = function(steps, connectionsXY, metri
  */
 Blockly.BlockSvg.prototype.getFieldShadowBlock_ = function() {
   for (var i = 0, child; child = this.childBlocks_[i]; i++) {
+    // console.log('shadow_', child)
+    // is_shadow? -> parentBlock? -> type is reporter?
     if (child.isShadow()) {
       return child;
     }
   }
 
   return null;
+};
+
+Blockly.BlockSvg.prototype.getFieldReporterBlock_ = function() {
+  for (var i = 0, child; child = this.childBlocks_[i]; i++) {
+    // child.type
+    // Reporter_get_random_number
+    var typeReporter = child.type
+
+    if (!child.isShadow()) {
+      if (typeReporter.startsWith("Reporter_")) {
+        return child;
+      }
+    }
+  }
+
+  return null
 };
 
 /**
