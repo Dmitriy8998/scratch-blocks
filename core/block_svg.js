@@ -542,7 +542,18 @@ Blockly.BlockSvg.prototype.setParent = function(newParent) {
     newParent.getSvgRoot().appendChild(svgRoot);
     var newXY = this.getRelativeToSurfaceXY();
     // Move the connections to match the child's new position.
-    this.moveConnections_(newXY.x - oldXY.x, newXY.y - oldXY.y);
+
+    
+    if (this.outputConnection) {
+    // This reporter
+      this.moveConnections_(newXY.x, newXY.y);
+    } else {
+      // This statement-block
+      this.moveConnections_(newXY.x - oldXY.x, newXY.y - oldXY.y);
+    }
+    
+    // TODO: Also need this to the c-block
+
     // If we are a shadow block, inherit tertiary colour.
     if (this.isShadow()) {
       this.setColour(this.getColour(), this.getColourSecondary(),
@@ -959,7 +970,7 @@ Blockly.BlockSvg.prototype.ReporterPositionCalculation = function() {
           // console.log(iconXY.x)
           // console.log(iconXY.y)
           // console.log(iconXY)
-          this.getSvgRoot().setAttribute('transform', `translate(${iconXY.x-2},${65})`);
+          this.getSvgRoot().setAttribute('transform', `translate(${(iconXY.x-2)},${65})`);
           // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
         }
 
@@ -972,7 +983,7 @@ Blockly.BlockSvg.prototype.ReporterPositionCalculation = function() {
           // console.log(iconXY.x)
           // console.log(iconXY.y)
           // console.log(iconXY)
-          this.getSvgRoot().setAttribute('transform', `translate(${iconXY.x-2},${65})`);
+          this.getSvgRoot().setAttribute('transform', `translate(${(iconXY.x-2)},${65})`);
           // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
         }
     }
