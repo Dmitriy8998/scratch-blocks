@@ -943,6 +943,9 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function(e) {
 
 /**
  * Patch for calculating position of the reporter notch in to blocks.
+ * 
+ * TODO: Fix this properly later. reporterBubbleCoordsXY.y is hardcoded to 65 for now, but it should be calculated dynamically.
+ * TODO: Also, the if statements for xy.x and xy.y are redundant and can be simplified.
  */
 Blockly.BlockSvg.prototype.ReporterPositionCalculation = function() {
   // TODO: Fix this properly later.
@@ -953,47 +956,61 @@ Blockly.BlockSvg.prototype.ReporterPositionCalculation = function() {
   if (this.outputConnection && this.outputConnection.targetConnection) {
     const blockSvg = this.getSvgRoot();
     const shape = blockSvg.parentElement.getAttribute("data-shapes")
-   
-    var parent = this.getParent();
-    
+       
     if (shape === "c-block") {
-        const transformAttr = this.getSvgRoot().getAttribute("transform");
-        console.log("c-block!")
+        const xy = this.getRelativeToSurfaceXY();
         
-
-        const xy = Blockly.utils.getRelativeXY(this.getSvgRoot());
         if (xy.x === 0 && xy.y === 0 ) {
           const parentSvg = this.getSvgRoot().parentElement;
-          const iconG = parentSvg.querySelector('g[transform^="translate"]');
-          const iconXY = Blockly.utils.getRelativeXY(iconG);
-          const bbox = parentSvg.getBBox();
-          // console.log(iconXY.x)
-          // console.log(iconXY.y)
-          // console.log(iconXY)
-          this.getSvgRoot().setAttribute('transform', `translate(${(iconXY.x-2)},${65})`);
+          const reporterBubbleSvgSelectorG = parentSvg.querySelector('g[transform^="translate"]');
+          const reporterBubbleCoordsXY = Blockly.utils.getRelativeXY(reporterBubbleSvgSelectorG);
+          this.getSvgRoot().setAttribute('transform', `translate(${(reporterBubbleCoordsXY.x)},${65})`);
           // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
         }
-
-
         if (xy.x < 0.1 && xy.y < 0.1) {
           const parentSvg = this.getSvgRoot().parentElement;
-          const iconG = parentSvg.querySelector('g[transform^="translate"]');
-          const iconXY = Blockly.utils.getRelativeXY(iconG);
-          const bbox = parentSvg.getBBox();
-          // console.log(iconXY.x)
-          // console.log(iconXY.y)
-          // console.log(iconXY)
-          this.getSvgRoot().setAttribute('transform', `translate(${(iconXY.x-2)},${65})`);
+          const reporterBubbleSvgSelectorG = parentSvg.querySelector('g[transform^="translate"]');
+          const reporterBubbleCoordsXY = Blockly.utils.getRelativeXY(reporterBubbleSvgSelectorG);
+          this.getSvgRoot().setAttribute('transform', `translate(${(reporterBubbleCoordsXY.x)},${65})`);
+          // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
+        }
+        if (xy.x < 0.1 && xy.y > 0.1) {
+          const parentSvg = this.getSvgRoot().parentElement;
+          const reporterBubbleSvgSelectorG = parentSvg.querySelector('g[transform^="translate"]');
+          const reporterBubbleCoordsXY = Blockly.utils.getRelativeXY(reporterBubbleSvgSelectorG);
+          this.getSvgRoot().setAttribute('transform', `translate(${(reporterBubbleCoordsXY.x)},${65})`);
+          // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
+        }
+        if (xy.x > 0.1 && xy.y < 0.1) {
+          const parentSvg = this.getSvgRoot().parentElement;
+          const reporterBubbleSvgSelectorG = parentSvg.querySelector('g[transform^="translate"]');
+          const reporterBubbleCoordsXY = Blockly.utils.getRelativeXY(reporterBubbleSvgSelectorG);
+          this.getSvgRoot().setAttribute('transform', `translate(${(reporterBubbleCoordsXY.x)},${65})`);
+          // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
+        }
+        if (xy.x > 0.1 && xy.y > 0.1) {
+          const parentSvg = this.getSvgRoot().parentElement;
+          const reporterBubbleSvgSelectorG = parentSvg.querySelector('g[transform^="translate"]');
+          const reporterBubbleCoordsXY = Blockly.utils.getRelativeXY(reporterBubbleSvgSelectorG);
+          this.getSvgRoot().setAttribute('transform', `translate(${(reporterBubbleCoordsXY.x)},${65})`);
           // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
         }
     }
     if (shape === "stack") {
-        console.log("stack!")
-        const xy = Blockly.utils.getRelativeXY(this.getSvgRoot());
+        const xy = this.getRelativeToSurfaceXY();
         if (xy.x === 0 && xy.y === 0 ) {
             this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
         }
         if (xy.x < 0.1 && xy.y < 0.1) {
+            this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+        }
+        if (xy.x < 0.1 && xy.y > 0.1) {
+            this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+        }
+        if (xy.x > 0.1 && xy.y < 0.1) {
+            this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+        }
+        if (xy.x > 0.1 && xy.y > 0.1) {
             this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
         }
     }
