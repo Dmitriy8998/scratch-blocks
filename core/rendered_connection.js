@@ -173,6 +173,7 @@ Blockly.RenderedConnection.prototype.tighten_ = function() {
     block.getSvgRoot().setAttribute('transform',
         'translate(' + (xy.x - dx) + ',' + (xy.y - dy) + ')');
     block.moveConnections_(-dx, -dy);
+    // block.ReporterPositionCalculation()
   }
 };
 

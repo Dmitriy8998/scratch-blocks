@@ -374,6 +374,38 @@ Blockly.BlockSvg.prototype.getHeightWidth = function(opt_ignoreFields) {
   return {height: height, width: width};
 };
 
+
+
+// Blockly.BlockSvg.prototype.renderMoveConnections_ = function() {
+//     var blockTL = this.getRelativeToSurfaceXY();
+//     // Don't tighten previous or output connections because they are inferior.
+//     if (this.previousConnection) {
+//       this.previousConnection.moveToOffset(blockTL);
+//     }
+//     if (this.outputConnection) {
+//       this.outputConnection.moveToOffset(blockTL);
+//     }
+
+//     for (var i = 0; i < this.inputList.length; i++) {
+//       var conn = this.inputList[i].connection;
+//       if (conn) {
+//         conn.moveToOffset(blockTL);
+//         if (conn.isConnected()) {
+//           conn.tighten_();
+//         }
+//       }
+//     }
+
+//     if (this.nextConnection) {
+//       this.nextConnection.moveToOffset(blockTL);
+//       if (this.nextConnection.isConnected()) {
+//         this.nextConnection.tighten_();
+//       }
+//     }
+//   };
+
+
+
 /**
  * Render the block.
  * Lays out and reflows a block based on its contents and settings.
