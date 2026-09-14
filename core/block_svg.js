@@ -963,104 +963,82 @@ Blockly.BlockSvg.prototype.ReporterPositionCalculation = function(x, y) {
         
         if (xy.x === 0 && xy.y === 0 ) {
           const parentSvg = this.getSvgRoot().parentElement;
-          const reporterBubbleSvgSelectorG = parentSvg.querySelector('g[transform^="translate"]');
-          const reporterBubbleCoordsXY = Blockly.utils.getRelativeXY(reporterBubbleSvgSelectorG);
-          this.getSvgRoot().setAttribute('transform', `translate(${(reporterBubbleCoordsXY.x)},${65})`);
-          // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
+          const bbox = parentSvg.querySelector('.blocklyBlockBackground').getBBox();
+          
+          const width = bbox.width
+          const height = bbox.height
+          const offset_w = width - 56
+          const offset_h = height - 12
+          
+          this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${offset_h})`);
         }
+
         if (xy.x < 0.1 && xy.y < 0.1) {
           const parentSvg = this.getSvgRoot().parentElement;
-          const reporterBubbleSvgSelectorG = parentSvg.querySelector('g[transform^="translate"]');
-          const reporterBubbleCoordsXY = Blockly.utils.getRelativeXY(reporterBubbleSvgSelectorG);
-          this.getSvgRoot().setAttribute('transform', `translate(${(reporterBubbleCoordsXY.x)},${65})`);
-          // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
+          const bbox = parentSvg.querySelector('.blocklyBlockBackground').getBBox();
+          
+          const width = bbox.width
+          const height = bbox.height
+          const offset_w = width - 56
+          const offset_h = height - 12
+
+          this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${offset_h})`);
         }
+
         if (xy.x < 0.1 && xy.y > 0.1) {
           const parentSvg = this.getSvgRoot().parentElement;
-          const reporterBubbleSvgSelectorG = parentSvg.querySelector('g[transform^="translate"]');
-          const reporterBubbleCoordsXY = Blockly.utils.getRelativeXY(reporterBubbleSvgSelectorG);
-          this.getSvgRoot().setAttribute('transform', `translate(${(reporterBubbleCoordsXY.x)},${65})`);
-          // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
+          const bbox = parentSvg.querySelector('.blocklyBlockBackground').getBBox();
+          
+          const width = bbox.width
+          const height = bbox.height
+          const offset_w = width - 56
+          const offset_h = height - 12
+          
+          this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${offset_h})`);
         }
+
         if (xy.x > 0.1 && xy.y < 0.1) {
           const parentSvg = this.getSvgRoot().parentElement;
-          // console.log("parentSvg", parentSvg)
-          const reporterBubbleSvgSelectorG = parentSvg.querySelector('g[transform^="translate"]');
-          const reporterBubbleCoordsXY = Blockly.utils.getRelativeXY(reporterBubbleSvgSelectorG);
-
-          // var data_shapes = parentSvg.getAttribute('data-shapes')
-          // var transform = parentSvg.getAttribute('transform');
-          var childNodes = parentSvg.childNodes
-          // var childElementCount = parentSvg.querySelector('childElementCount')
-          // console.log("transform", transform)
           const bbox = parentSvg.querySelector('.blocklyBlockBackground').getBBox();
+          
           const width = bbox.width
           const height = bbox.height
-
           const offset_w = width - 56
-          const coord_w = width - offset_w
-
-          console.log("width1", width);
-          console.log("height1", height);
-          console.log("offset_w", offset_w);
-          console.log("const coord_w", coord_w);
-
-          // console.log("childNodes", childNodes)
-          // console.log("childElementCount", childElementCount)
-          // console.log(parentSvg.childElementCount);
-
-          this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${75})`);
-          // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
+          const offset_h = height - 12
+          
+          this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${offset_h})`);
         }
+
         if (xy.x > 0.1 && xy.y > 0.1) {
           const parentSvg = this.getSvgRoot().parentElement;
-          // console.log("parentSvg", parentSvg)
-          const reporterBubbleSvgSelectorG = parentSvg.querySelector('g[transform^="translate"]');
-          const reporterBubbleCoordsXY = Blockly.utils.getRelativeXY(reporterBubbleSvgSelectorG);
-
-          // var data_shapes = parentSvg.getAttribute('data-shapes')
-          // var transform = parentSvg.getAttribute('transform');
-          var childNodes = parentSvg.childNodes
-          // var childElementCount = parentSvg.querySelector('childElementCount')
-          // console.log("transform", transform)
           const bbox = parentSvg.querySelector('.blocklyBlockBackground').getBBox();
+          
           const width = bbox.width
           const height = bbox.height
-
           const offset_w = width - 56
-          const coord_w = width - offset_w
+          const offset_h = height - 12
 
-          console.log("width2", width);
-          console.log("height2", height);
-          console.log("offset_w", offset_w);
-          console.log("coord_w", coord_w);
-
-          // console.log("childNodes", childNodes)
-          // console.log("childElementCount", childElementCount)
-          // console.log(parentSvg.childElementCount);
-
-          this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${75})`);
-          // this.getSvgRoot().setAttribute('transform', 'translate(56,65)');
+          this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${offset_h})`);
         }
     }
+    
     if (shape === "stack") {
-        const xy = this.getRelativeToSurfaceXY();
-        // console.log('xy_surface', xy)
-        if (xy.x === 0 && xy.y === 0 ) {
-            this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
-        }
-        if (xy.x < 0.1 && xy.y < 0.1) {
-            this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
-        }
-        if (xy.x < 0.1 && xy.y > 0.1) {
-            this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
-        }
-        if (xy.x > 0.1 && xy.y < 0.1) {
-            this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
-        }
-        if (xy.x > 0.1 && xy.y > 0.1) {
-            this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
-        }
+      const xy = this.getRelativeToSurfaceXY();
+      if (xy.x === 0 && xy.y === 0 ) {
+        this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+      }
+      if (xy.x < 0.1 && xy.y < 0.1) {
+        this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+      }
+      if (xy.x < 0.1 && xy.y > 0.1) {
+        this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+      }
+      if (xy.x > 0.1 && xy.y < 0.1) {  
+        this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+      }
+      if (xy.x > 0.1 && xy.y > 0.1) {
+        this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+      }
     }
   }
 }
