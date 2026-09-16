@@ -233,7 +233,6 @@ Blockly.ConnectionDB.prototype.isInYRange_ = function(index, baseY, maxRadius) {
  *     and 'radius' which is the distance.
  */
 
-//BUG! The developers changed X and Y at a lower level! The library was originally designed for vertical blocks!
 Blockly.ConnectionDB.prototype.searchForClosest = function(conn, maxRadius,
     dxy) {
   // Don't bother.

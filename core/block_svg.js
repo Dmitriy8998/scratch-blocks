@@ -967,8 +967,8 @@ Blockly.BlockSvg.prototype.ReporterPositionCalculation = function(x, y) {
           
           const width = bbox.width
           const height = bbox.height
-          const offset_w = width - 56
-          const offset_h = height - 12
+          const offset_w = width - 64
+          const offset_h = height - 9
           
           this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${offset_h})`);
         }
@@ -979,8 +979,8 @@ Blockly.BlockSvg.prototype.ReporterPositionCalculation = function(x, y) {
           
           const width = bbox.width
           const height = bbox.height
-          const offset_w = width - 56
-          const offset_h = height - 12
+          const offset_w = width - 64
+          const offset_h = height - 9
 
           this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${offset_h})`);
         }
@@ -991,8 +991,8 @@ Blockly.BlockSvg.prototype.ReporterPositionCalculation = function(x, y) {
           
           const width = bbox.width
           const height = bbox.height
-          const offset_w = width - 56
-          const offset_h = height - 12
+          const offset_w = width - 64
+          const offset_h = height - 9
           
           this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${offset_h})`);
         }
@@ -1003,8 +1003,8 @@ Blockly.BlockSvg.prototype.ReporterPositionCalculation = function(x, y) {
           
           const width = bbox.width
           const height = bbox.height
-          const offset_w = width - 56
-          const offset_h = height - 12
+          const offset_w = width - 64
+          const offset_h = height - 9
           
           this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${offset_h})`);
         }
@@ -1015,14 +1015,14 @@ Blockly.BlockSvg.prototype.ReporterPositionCalculation = function(x, y) {
           
           const width = bbox.width
           const height = bbox.height
-          const offset_w = width - 56
-          const offset_h = height - 12
+          const offset_w = width - 64
+          const offset_h = height - 9
 
           this.getSvgRoot().setAttribute('transform', `translate(${(offset_w)},${offset_h})`);
         }
     }
     
-    if (shape === "stack") {
+    if (shape === "stack" || shape === "hat") {
       const xy = this.getRelativeToSurfaceXY();
       if (xy.x === 0 && xy.y === 0 ) {
         this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
@@ -1038,6 +1038,25 @@ Blockly.BlockSvg.prototype.ReporterPositionCalculation = function(x, y) {
       }
       if (xy.x > 0.1 && xy.y > 0.1) {
         this.getSvgRoot().setAttribute('transform', 'translate(8,56)');
+      }
+    }
+
+    if (shape === "hat") {
+      const xy = this.getRelativeToSurfaceXY();
+      if (xy.x === 0 && xy.y === 0 ) {
+        this.getSvgRoot().setAttribute('transform', 'translate(14,56)');
+      }
+      if (xy.x < 0.1 && xy.y < 0.1) {
+        this.getSvgRoot().setAttribute('transform', 'translate(14,56)');
+      }
+      if (xy.x < 0.1 && xy.y > 0.1) {
+        this.getSvgRoot().setAttribute('transform', 'translate(14,56)');
+      }
+      if (xy.x > 0.1 && xy.y < 0.1) {  
+        this.getSvgRoot().setAttribute('transform', 'translate(14,56)');
+      }
+      if (xy.x > 0.1 && xy.y > 0.1) {
+        this.getSvgRoot().setAttribute('transform', 'translate(14,56)');
       }
     }
   }
