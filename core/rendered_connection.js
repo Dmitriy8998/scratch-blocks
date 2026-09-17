@@ -122,7 +122,7 @@ Blockly.RenderedConnection.prototype.moveTo = function(x, y) {
   this.y_ = y;
   // Insert it into its new location in the database.
   if (!this.hidden_) {
-    console.log("_add_connection?")
+    // console.log("_add_connection?", this)
     this.db_.addConnection(this);
   }
 };

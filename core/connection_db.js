@@ -49,6 +49,31 @@ Blockly.ConnectionDB = function() {
  * @param {!Blockly.Connection} connection The connection to be added.
  */
 Blockly.ConnectionDB.prototype.addConnection = function(connection) {
+  var sourceBlock = connection.getSourceBlock();
+  var blockSvg = sourceBlock.getSvgRoot();
+  var shape = blockSvg.parentElement.getAttribute("data-shapes");
+
+  // console.log("CONNECTION_IN DB", connection);
+  // console.log("BLOCK_SHAPE", shape);
+
+  if (connection.type === 1) {
+    // console.log(blockSvg)
+
+    const parentSvg = sourceBlock.getSvgRoot().parentElement;
+    const bbox = parentSvg.querySelector('.blocklyBlockBackground').getBBox();
+          
+    const width = bbox.width
+    const height = bbox.height
+
+    console.log(width)
+    console.log(height)
+
+    var blockXY = connection.getSourceBlock().getRelativeToSurfaceXY();
+    console.log("---", blockXY)
+    connection.x_ = blockXY.x + 50;
+    connection.y_ = blockXY.y + 50;
+  }
+
   if (connection.inDB_) {
     throw Error('Connection already in database.');
   }
