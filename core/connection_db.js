@@ -44,34 +44,66 @@ Blockly.ConnectionDB = function() {
   this.connections_ = [];
 };
 
+ // const block = connection.getSourceBlock();
+  // console.log(block)
+
+  // if (connection.type === 1) {
+  //   const sourceBlock = connection.getSourceBlock();
+  //   console.log('coonsrct_1', sourceBlock)
+  //   const blockSvg = sourceBlock.getSvgRoot();
+  //   const shape = blockSvg.getAttribute("data-shapes");
+
+  //   if (shape === "c-block") {
+  //     const bbox = blockSvg.querySelector('.blocklyBlockBackground').getBBox();
+      
+  //     const width = bbox.width
+  //     const height = bbox.height
+
+      // console.log(width)
+      // console.log(height)
+
+    // }
+
+  // }
+
+  // if (connection.type === 1) {
+    // var blockXY = connection.getSourceBlock().getRelativeToSurfaceXY();
+
+    // const width = bbox.width
+    // const height = bbox.height
+
+    // console.log(width)
+    // console.log(height)
+    // console.log(shape)
+
+    // connection.x_ = blockXY.x + 50;
+    // connection.y_ = blockXY.y + 50;
+  // }
+
 /**
  * Add a connection to the database.  Must not already exist in DB.
  * @param {!Blockly.Connection} connection The connection to be added.
  */
 Blockly.ConnectionDB.prototype.addConnection = function(connection) {
-  var sourceBlock = connection.getSourceBlock();
-  var blockSvg = sourceBlock.getSvgRoot();
-  var shape = blockSvg.parentElement.getAttribute("data-shapes");
+  const block = connection.getSourceBlock();
+  const blockSvg = block.getSvgRoot();
+  const shape = blockSvg.getAttribute("data-shapes");
 
-  // console.log("CONNECTION_IN DB", connection);
-  // console.log("BLOCK_SHAPE", shape);
-
-  if (connection.type === 1) {
-    // console.log(blockSvg)
-
-    const parentSvg = sourceBlock.getSvgRoot().parentElement;
-    const bbox = parentSvg.querySelector('.blocklyBlockBackground').getBBox();
-          
-    const width = bbox.width
-    const height = bbox.height
-
-    console.log(width)
-    console.log(height)
-
-    var blockXY = connection.getSourceBlock().getRelativeToSurfaceXY();
-    console.log("---", blockXY)
-    connection.x_ = blockXY.x + 50;
-    connection.y_ = blockXY.y + 50;
+  if (shape === "c-block") {
+    if (connection.type === 1) {
+      // console.log(1)
+      const blockXY = connection.getSourceBlock().getRelativeToSurfaceXY();
+      connection.x_ = blockXY.x + 50;
+      connection.y_ = blockXY.y + 50;
+     }
+  }
+  if (shape === "stack") {
+    if (connection.type === 1) {
+      // console.log(1)
+      const blockXY = connection.getSourceBlock().getRelativeToSurfaceXY();
+      connection.x_ = blockXY.x + 15;
+      connection.y_ = blockXY.y + 50;
+     }
   }
 
   if (connection.inDB_) {
