@@ -234,6 +234,12 @@ Blockly.FieldTextInput.prototype.showEditor_ = function( opt_quietInput, opt_rea
   var htmlInput =
       goog.dom.createDom(goog.dom.TagName.INPUT, 'blocklyHtmlInput');
   htmlInput.setAttribute('spellcheck', this.spellcheck_);
+  
+  // TODO: This is needed to limit the number of characters that can be entered in the Reporter block.
+  // if (this.maxDisplayLength) {
+  //   htmlInput.maxLength = this.maxDisplayLength;
+  // }
+
   if (readOnly) {
     htmlInput.setAttribute('readonly', 'true');
   }
@@ -639,7 +645,9 @@ Blockly.FieldTextInput.prototype.maybeSaveEdit_ = function() {
     }
   }
   this.setText(text);
-  this.sourceBlock_.rendered && this.sourceBlock_.render();
+  if ( this.sourceBlock_.rendered) {
+    this.textElement_.textContent = this.getDisplayText_();
+  }
 };
 
 /**
