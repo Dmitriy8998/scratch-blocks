@@ -113,7 +113,6 @@ Blockly.RenderedConnection.prototype.bumpAwayFrom_ = function(staticConnection) 
  * @param {number} y New absolute y coordinate, in workspace coordinates.
  */
 Blockly.RenderedConnection.prototype.moveTo = function(x, y) {
-  // console.log("---")
   // Remove it from its old location in the database (if already present)
   if (this.inDB_) {
     this.db_.removeConnection_(this);
@@ -122,7 +121,6 @@ Blockly.RenderedConnection.prototype.moveTo = function(x, y) {
   this.y_ = y;
   // Insert it into its new location in the database.
   if (!this.hidden_) {
-    // console.log("_add_connection?", this)
     this.db_.addConnection(this);
   }
 };

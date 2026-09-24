@@ -476,6 +476,23 @@ Blockly.BlockSvg.prototype.renderCompute_ = function() {
   for (var i = 0, input; input = this.inputList[i]; i++) {
     if (input.type == Blockly.NEXT_STATEMENT) {
       metrics.statement = input;
+
+      // PATCH!
+      if (!(input.connection && input.connection.targetConnection)) {
+        if (!(input.connection && input.connection.targetConnection) && (this.previousConnection && this.previousConnection.targetConnection)) {
+          const connection_reporter = this.getConnections_(true).find(c => c.type === 1);
+          if (connection_reporter) {
+            const blockSvg = this.getSvgRoot();
+            const blockXY = connection_reporter.getSourceBlock().getRelativeToSurfaceXY();
+            const bBox = blockSvg.querySelector('.blocklyBlockBackground').getBBox();
+            const offset_w = 75 - (-25);
+            const offset_h = 75 - (-9);
+            connection_reporter.moveTo(blockXY.x + offset_w, blockXY.y + offset_h);
+          }
+        }
+      }
+      //
+
       // Compute minimum input size.
       metrics.bayHeight = Blockly.BlockSvg.MIN_BLOCK_Y;
       metrics.bayWidth = Blockly.BlockSvg.MIN_BLOCK_X;
@@ -544,6 +561,26 @@ Blockly.BlockSvg.prototype.renderCompute_ = function() {
     // Block with statement (e.g., repeat, forever)
     metrics.width += metrics.bayWidth + 4 * Blockly.BlockSvg.CORNER_RADIUS + 2 * Blockly.BlockSvg.GRID_UNIT;
     metrics.height = metrics.bayHeight + Blockly.BlockSvg.STATEMENT_BLOCK_SPACE;
+
+    // PATCH!
+    // Fix! Resolved an issue with the connector's interaction area located under a reporter block inside C-shaped blocks. 
+    // Changes were made to correct the connector's position when a C-shaped block expands. 
+    // In block_svg.js, the ReporterPositionCalculation function synchronizes the SVG position of the reporter block's slot at the moment of dragging or attaching a block. 
+    // This particular patch is applied at this specific location, during the block's first render on the workspace.
+    const blockSvg = this.getSvgRoot()
+    const bbox = blockSvg.querySelector('.blocklyBlockBackground').getBBox();
+    const shape = blockSvg.getAttribute("data-shapes");
+    const connection_reporter = this.getConnections_(true).find(c => c.type === 1);
+    if (connection_reporter && bBox) {
+      const width = bBox.width
+      const height = bBox.height
+      const offset_w = width - (-25)
+      const offset_h = height - (-9)
+      const blockXY = connection_reporter.getSourceBlock().getRelativeToSurfaceXY();
+      connection_reporter.moveTo(blockXY.x+offset_w, blockXY.y+offset_h)  
+    }
+    //
+
   }
   if (metrics.startHat) {
     // Start hats are 1 unit wider to account for optical effect of curve.
