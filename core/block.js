@@ -345,6 +345,9 @@ Blockly.Block.prototype.unplug = function(opt_healStack) {
     if (this.outputConnection.isConnected()) {
       // Disconnect from any superior block.
       this.outputConnection.disconnect();
+      const connection_reporter = this.getConnections_(true).find(c => c.type === 2);
+      const xy = this.getRelativeToSurfaceXY();
+      connection_reporter.moveTo(xy.x, xy.y);
     }
   } else {
     if (this.previousConnection) {
