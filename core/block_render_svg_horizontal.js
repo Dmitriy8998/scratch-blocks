@@ -71,7 +71,7 @@ Blockly.BlockSvg.FIELD_WIDTH = 12 * Blockly.BlockSvg.GRID_UNIT;
  * Editable field padding (left/right of the text).
  * @const
  */
-Blockly.BlockSvg.EDITABLE_FIELD_PADDING = 0;
+Blockly.BlockSvg.EDITABLE_FIELD_PADDING = 50;
 
 /**
  * Minimum width of user inputs during editing
@@ -374,38 +374,6 @@ Blockly.BlockSvg.prototype.getHeightWidth = function(opt_ignoreFields) {
   return {height: height, width: width};
 };
 
-
-
-// Blockly.BlockSvg.prototype.renderMoveConnections_ = function() {
-//     var blockTL = this.getRelativeToSurfaceXY();
-//     // Don't tighten previous or output connections because they are inferior.
-//     if (this.previousConnection) {
-//       this.previousConnection.moveToOffset(blockTL);
-//     }
-//     if (this.outputConnection) {
-//       this.outputConnection.moveToOffset(blockTL);
-//     }
-
-//     for (var i = 0; i < this.inputList.length; i++) {
-//       var conn = this.inputList[i].connection;
-//       if (conn) {
-//         conn.moveToOffset(blockTL);
-//         if (conn.isConnected()) {
-//           conn.tighten_();
-//         }
-//       }
-//     }
-
-//     if (this.nextConnection) {
-//       this.nextConnection.moveToOffset(blockTL);
-//       if (this.nextConnection.isConnected()) {
-//         this.nextConnection.tighten_();
-//       }
-//     }
-//   };
-
-
-
 /**
  * Render the block.
  * Lays out and reflows a block based on its contents and settings.
@@ -479,19 +447,15 @@ Blockly.BlockSvg.prototype.renderCompute_ = function() {
 
       // PATCH!
       if (!(input.connection && input.connection.targetConnection)) {
-        if (!(input.connection && input.connection.targetConnection) && (this.previousConnection && this.previousConnection.targetConnection)) {
-          const connection_reporter = this.getConnections_(true).find(c => c.type === 1);
-          if (connection_reporter) {
-            const blockSvg = this.getSvgRoot();
-            const blockXY = connection_reporter.getSourceBlock().getRelativeToSurfaceXY();
-            const bBox = blockSvg.querySelector('.blocklyBlockBackground').getBBox();
-            const offset_w = 75 - (-25);
-            const offset_h = 75 - (-9);
-            connection_reporter.moveTo(blockXY.x + offset_w, blockXY.y + offset_h);
-          }
+        var connection_reporter = this.getConnections_(true).find(c => c.type === 1);
+        if (connection_reporter) {
+          var blockSvg = this.getSvgRoot();
+          var blockXY = connection_reporter.getSourceBlock().getRelativeToSurfaceXY();
+          var offset_w = 80;
+          var offset_h = 85;
+          connection_reporter.moveTo(blockXY.x + offset_w, blockXY.y + offset_h);
         }
       }
-      //
 
       // Compute minimum input size.
       metrics.bayHeight = Blockly.BlockSvg.MIN_BLOCK_Y;
@@ -567,15 +531,12 @@ Blockly.BlockSvg.prototype.renderCompute_ = function() {
     // Changes were made to correct the connector's position when a C-shaped block expands. 
     // In block_svg.js, the ReporterPositionCalculation function synchronizes the SVG position of the reporter block's slot at the moment of dragging or attaching a block. 
     // This particular patch is applied at this specific location, during the block's first render on the workspace.
-    const blockSvg = this.getSvgRoot()
-    const bbox = blockSvg.querySelector('.blocklyBlockBackground').getBBox();
-    const shape = blockSvg.getAttribute("data-shapes");
     const connection_reporter = this.getConnections_(true).find(c => c.type === 1);
     if (connection_reporter && bBox) {
       const width = bBox.width
       const height = bBox.height
-      const offset_w = width - (-25)
-      const offset_h = height - (-9)
+      const offset_w = width + 25
+      const offset_h = height + 9
       const blockXY = connection_reporter.getSourceBlock().getRelativeToSurfaceXY();
       connection_reporter.moveTo(blockXY.x+offset_w, blockXY.y+offset_h)  
     }
