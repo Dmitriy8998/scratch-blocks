@@ -375,12 +375,129 @@ Blockly.BlockSvg.prototype.getHeightWidth = function(opt_ignoreFields) {
 };
 
 /**
+ * 
+ */
+Blockly.BlockSvg.prototype.RenderConnections = function(block, opt_bubble) {
+  block.rendered = true;
+
+    const oldMetrics = block.renderingMetrics_;
+    const metrics = block.renderCompute_();
+
+
+    // Condition check. Don't redraw unless necessary.
+    if (oldMetrics && Blockly.BlockSvg.metricsAreEquivalent_(oldMetrics, metrics)) {
+
+        // Rendering of side block connections
+        if (block.nextConnection && block.nextConnection.targetConnection) {
+            block.nextConnection.tighten_();
+        };
+
+        // Moving the reporter block exactly into the slot of the logic block.
+        block.inputList.forEach((input) => {
+            if (input.connection && input.connection.targetConnection) {
+                input.connection.tighten_();
+            };
+        });
+
+    } else {
+        block.height = metrics.height;
+        block.width = metrics.width;
+        block.renderDraw_(metrics);
+        block.renderClassify_(metrics);
+        block.renderingMetrics_ = metrics;
+    };
+
+    if (opt_bubble !== false ) {
+        // Render all blocks above this one (propagate a reflow).
+        const parentBlock = block.getParent();
+        
+        if (parentBlock) {
+            parentBlock.render(true);    
+        } else {
+        // Top-most block. Fire an event to allow scrollbars to resize.
+            Blockly.resizeSvgContents(block.workspace);
+        };
+    };
+    
+    Blockly.Field.stopCache();
+}
+
+/**
+ *
+ */
+Blockly.BlockSvg.prototype.RenderReporters = function(block, opt_bubble) {
+  if (block.type === 'Reporter_get_distance_to_obstacle') {
+      const pos = block.getRelativeToSurfaceXY();
+      Rerender(block, opt_bubble);
+  };
+
+  if (block.type === 'Reporter_get_distance_to_obstacle_dropdown') {
+      const pos = block.getRelativeToSurfaceXY();
+      Rerender(block, opt_bubble);
+  };
+
+  if (block.type === 'Reporter_get_distance_to_obstacle_broadcast') {
+      const pos = block.getRelativeToSurfaceXY();
+      Rerender(block, opt_bubble);
+  };
+
+  if (block.type === 'Reporter_get_pitch') {
+      const pos = block.getRelativeToSurfaceXY();
+      Rerender(block, opt_bubble);
+  };
+
+  if (block.type === 'Reporter_get_roll') {
+      const pos = block.getRelativeToSurfaceXY();
+      Rerender(block, opt_bubble);
+  };
+
+  if (block.type === 'Reporter_get_yaw') {
+      const pos = block.getRelativeToSurfaceXY();
+      Rerender(block, opt_bubble);
+  };
+
+  if (block.type === 'Reporter_get_random_number') {
+      const pos = block.getRelativeToSurfaceXY();
+      Rerender(block, opt_bubble);
+  };
+
+  if (block.type === 'Reporter_text_block') {
+      const pos = block.getRelativeToSurfaceXY();
+      Rerender(block, opt_bubble);
+  };
+
+  function Rerender (block, opt_bubble) {
+    var radius = 14;
+    var sepY = 1;
+    var oldRadius = Blockly.BlockSvg.CORNER_RADIUS;
+    var oldSepY = Blockly.BlockSvg.SEP_SPACE_Y;
+    Blockly.BlockSvg.CORNER_RADIUS = radius;
+    Blockly.BlockSvg.SEP_SPACE_Y = sepY;
+
+    block._skipReporterPatch = true;
+    block.render(opt_bubble);
+    block._skipReporterPatch = false;
+
+    Blockly.BlockSvg.CORNER_RADIUS = oldRadius;
+    Blockly.BlockSvg.SEP_SPACE_Y = oldSepY;
+  };
+};
+
+/**
  * Render the block.
  * Lays out and reflows a block based on its contents and settings.
  * @param {boolean=} opt_bubble If false, just render this block.
  *   If true, also render block's parent, grandparent, etc.  Defaults to true.
  */
 Blockly.BlockSvg.prototype.render = function(opt_bubble) {
+  
+  if (!this._skipReporterPatch) {
+    this.RenderReporters(this, opt_bubble);
+    this.RenderConnections(this, opt_bubble);
+      
+    return;
+  };
+  
   Blockly.Field.startCache();
   this.rendered = true;
 
