@@ -423,7 +423,7 @@ Blockly.BlockSvg.prototype.RenderConnections = function(block, opt_bubble) {
 }
 
 /**
- *
+ * Method for adjusting reporter block metrics. WIP (work in progress).
  */
 Blockly.BlockSvg.prototype.RenderReporters = function(block, opt_bubble) {
   if (block.type === 'Reporter_get_distance_to_obstacle') {
@@ -431,15 +431,16 @@ Blockly.BlockSvg.prototype.RenderReporters = function(block, opt_bubble) {
       Rerender(block, opt_bubble);
   };
 
-  if (block.type === 'Reporter_get_distance_to_obstacle_dropdown') {
-      const pos = block.getRelativeToSurfaceXY();
-      Rerender(block, opt_bubble);
-  };
+  // TODO: Do not delete!
+  // if (block.type === 'Reporter_get_distance_to_obstacle_dropdown') {
+  //     const pos = block.getRelativeToSurfaceXY();
+  //     Rerender(block, opt_bubble);
+  // };
 
-  if (block.type === 'Reporter_get_distance_to_obstacle_broadcast') {
-      const pos = block.getRelativeToSurfaceXY();
-      Rerender(block, opt_bubble);
-  };
+  // if (block.type === 'Reporter_get_distance_to_obstacle_broadcast') {
+  //     const pos = block.getRelativeToSurfaceXY();
+  //     Rerender(block, opt_bubble);
+  // };
 
   if (block.type === 'Reporter_get_pitch') {
       const pos = block.getRelativeToSurfaceXY();
@@ -461,10 +462,11 @@ Blockly.BlockSvg.prototype.RenderReporters = function(block, opt_bubble) {
       Rerender(block, opt_bubble);
   };
 
-  if (block.type === 'Reporter_text_block') {
-      const pos = block.getRelativeToSurfaceXY();
-      Rerender(block, opt_bubble);
-  };
+  // TODO: Do not delete!
+  // if (block.type === 'Reporter_text_block') {
+  //     const pos = block.getRelativeToSurfaceXY();
+  //     Rerender(block, opt_bubble);
+  // };
 
   function Rerender (block, opt_bubble) {
     var radius = 14;
