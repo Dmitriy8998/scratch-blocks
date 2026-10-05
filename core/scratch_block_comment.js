@@ -321,9 +321,9 @@ Blockly.ScratchBlockComment.prototype.autoPosition_ = function() {
     var fullStackWidth = Math.floor(this.block_.getHeightWidth().width);
     var overhang = fullStackWidth - thisBlockWidth;
     var offset = 8 * Blockly.BlockSvg.GRID_UNIT;
-    this.x_ = this.block_.RTL ?
-        this.iconXY_.x - this.width_ - overhang - offset :
-        this.iconXY_.x + overhang + offset;
+    const coordBlockInWorkspace = this.block_.getRelativeToSurfaceXY();
+    this.iconXY_ = new goog.math.Coordinate(coordBlockInWorkspace.x, coordBlockInWorkspace.y);
+    this.x_ = this.block_.RTL ? this.iconXY_.x - this.width_ - overhang - offset : this.iconXY_.x + overhang + offset;
     this.y_ = this.iconXY_.y - (Blockly.ScratchBubble.TOP_BAR_HEIGHT / 2);
   }
 };
