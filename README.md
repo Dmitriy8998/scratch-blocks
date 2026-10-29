@@ -57,3 +57,5 @@ npm install -g commitizen@latest cz-conventional-changelog@latest
 ```
 
 Now you're ready to make commits using `git cz`.
+# scratch-blocks
+# scratch-blocks
